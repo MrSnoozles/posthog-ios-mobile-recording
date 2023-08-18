@@ -1,0 +1,263 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)
+// swift-module-flags: -target arm64-apple-ios11.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name PostHogRecorder
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import Foundation
+import OSLog
+@_exported import PostHogRecorder
+import Swift
+import SwiftUI
+import SystemConfiguration
+import UIKit
+import Vision
+import WebKit
+import _Concurrency
+import _StringProcessing
+import os
+@propertyWrapper public struct CodableIgnored<T> : Swift.Codable {
+  public var wrappedValue: T?
+  public init(wrappedValue: T?)
+  public init(from _: Swift.Decoder) throws
+  public func encode(to _: Swift.Encoder) throws
+}
+extension Swift.KeyedDecodingContainer {
+  public func decode<T>(_: PostHogRecorder.CodableIgnored<T>.Type, forKey _: Swift.KeyedDecodingContainer<K>.Key) throws -> PostHogRecorder.CodableIgnored<T>
+}
+extension Swift.KeyedEncodingContainer {
+  public mutating func encode<T>(_: PostHogRecorder.CodableIgnored<T>, forKey _: Swift.KeyedEncodingContainer<K>.Key) throws
+}
+public enum RRWebEncoder {
+}
+public enum PostHogEncoder {
+}
+@propertyWrapper final public class ReadWriteLock<Value> {
+  public init(wrappedValue value: Value)
+  @objc deinit
+  final public var wrappedValue: Value {
+    get
+    set
+  }
+  final public func mutate(_ closure: (inout Value) -> Swift.Void)
+}
+@_hasMissingDesignatedInitializers public class URLSessionInterceptor {
+  public func taskCreated(task: Foundation.URLSessionTask, session _: Foundation.URLSession? = nil)
+  public func taskReceivedData(task _: Foundation.URLSessionTask, data _: Foundation.Data)
+  public func taskCompleted(task: Foundation.URLSessionTask, error _: Swift.Error?)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class PostHog : ObjectiveC.NSObject {
+  @objc public var config: PostHogRecorder.PostHogConfig {
+    get
+  }
+  @objc public var isSetup: Swift.Bool {
+    get
+  }
+  @objc public static let shared: PostHogRecorder.PostHog
+  @objc deinit
+  @objc public var recorder: PostHogRecorder.Recorder {
+    @objc get
+  }
+  @objc public func debug(enabled: Swift.Bool = true)
+  @objc public func setup(config: PostHogRecorder.PostHogConfig)
+  @objc public func getDistinctId() -> Swift.String?
+  @objc public func getAnonymousId() -> Swift.String?
+  @objc public func getSessionId() -> Swift.String?
+  public func flush()
+  public func reset()
+  public func getGroups() -> [Swift.String : Swift.String]
+  public func getRegisteredProperties() -> [Swift.String : Any]
+  @objc public func register(_ properties: [Swift.String : Any]) -> [Swift.String : Any]
+  @objc public func unregister(_ key: Swift.String)
+  @objc public func identify(_ distinctId: Swift.String, properties: [Swift.String : Any]? = nil)
+  @objc public func capture(_ event: Swift.String, properties: [Swift.String : Any]? = nil)
+  @objc public func screen(_ screenTitle: Swift.String, properties: [Swift.String : Any]? = nil)
+  @objc public func alias(_ alias: Swift.String, properties: [Swift.String : Any]? = nil)
+  @objc public func groups(_ newGroups: [Swift.String : Swift.String]) -> [Swift.String : Swift.String]
+  @objc public func groupIdentify(type: Swift.String, key: Swift.String, groupProperties: [Swift.String : Any]? = nil)
+  @objc public func group(type: Swift.String, key: Swift.String, groupProperties: [Swift.String : Any]? = nil)
+  @objc override dynamic public init()
+}
+@objc(PostHogDataMode) public enum PostHogDataMode : Swift.Int {
+  case wifi
+  case any
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc(PostHogConfig) public class PostHogConfig : ObjectiveC.NSObject {
+  @objc public var host: Foundation.URL
+  @objc public var apiKey: Swift.String
+  @objc public var flushAt: Swift.Int
+  @objc public var maxQueueSize: Swift.Int
+  @objc public var maxBatchSize: Swift.Int
+  @objc public var flushInterval: Swift.Double
+  @objc public var dataMode: PostHogRecorder.PostHogDataMode
+  @objc public var storagePrefix: Swift.String?
+  @objc public var recording: PostHogRecorder.PostHogRecorderConfig
+  @objc public static func newInstance(apiKey: Swift.String) -> PostHogRecorder.PostHogConfig
+  public init(apiKey: Swift.String)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc public class Recorder : ObjectiveC.NSObject {
+  @objc public static let shared: PostHogRecorder.Recorder
+  @objc deinit
+  public func updateConfig(config: PostHogRecorder.PostHogRecorderConfig)
+  public func start(config: PostHogRecorder.PostHogRecorderConfig?, eventHandler: @escaping (PostHogRecorder.PostHogEvent) -> Swift.Void)
+  public func log(message: Swift.String, level: PostHogRecorder.LogLevel = LogLevel.log)
+}
+extension PostHogRecorder.PostHog {
+  public static let didStartNotification: Foundation.Notification.Name
+  public static let didStartRecordingNotification: Foundation.Notification.Name
+  public static let didResetSessionNotification: Foundation.Notification.Name
+}
+@_hasMissingDesignatedInitializers @objc public class NetworkRecorder : ObjectiveC.NSObject {
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class PostHogEvent {
+  public var timestamp: Foundation.Date
+  public var event: Swift.String
+  public var properties: [Swift.String : Any]
+  @objc deinit
+}
+public enum LogLevel : Swift.String {
+  case debug
+  case log
+  case info
+  case warn
+  case error
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum PostHogLogger {
+  public static func log(_ message: Swift.String, level: PostHogRecorder.LogLevel = LogLevel.log)
+  public static func debug(_ message: Swift.String)
+  public static func info(_ message: Swift.String)
+  public static func warn(_ message: Swift.String)
+  public static func error(_ message: Swift.String)
+}
+@objc(ScreenRecorderMaskingMode) public enum ScreenRecorderMaskingMode : Swift.Int {
+  case selective
+  case automatic
+  case wireframe
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc(PostHogRecorderConfig) public class PostHogRecorderConfig : ObjectiveC.NSObject {
+  @objc public var screenRecordingEnabled: Swift.Bool
+  @objc public var logRecordingEnabled: Swift.Bool
+  @objc public var networkRecordingEnabled: Swift.Bool
+  @objc public var redactionMode: PostHogRecorder.ScreenRecorderMaskingMode
+  @objc public var redactionTags: Swift.Set<Swift.String>
+  @objc public var redactionViews: Swift.Set<Swift.String>
+  @objc public var redactionClasses: [Swift.AnyClass]
+  @objc public var ignoreNetworkHosts: Swift.Set<Swift.String>
+  @objc public static let DefaultRedactionViews: Swift.Set<Swift.String>
+  @objc public static let DefaultRedactionClasses: [Swift.AnyClass]
+  @objc public static func newInstance() -> PostHogRecorder.PostHogRecorderConfig
+  public init(screenRecordingEnabled: Swift.Bool? = nil, logRecordingEnabled: Swift.Bool? = nil, networkRecordingEnabled: Swift.Bool? = nil, redactionMode: PostHogRecorder.ScreenRecorderMaskingMode? = nil, redactionTags: Swift.Set<Swift.String>? = nil, redactionViews: Swift.Set<Swift.String>? = nil, redactionClasses: [Swift.AnyClass]? = nil)
+  @objc deinit
+}
+public enum ReachabilityError : Swift.Error {
+  case failedToCreateWithAddress(Darwin.sockaddr, Swift.Int32)
+  case failedToCreateWithHostname(Swift.String, Swift.Int32)
+  case unableToSetCallback(Swift.Int32)
+  case unableToSetDispatchQueue(Swift.Int32)
+  case unableToGetFlags(Swift.Int32)
+}
+@available(*, unavailable, renamed: "Notification.Name.reachabilityChanged")
+public let ReachabilityChangedNotification: Foundation.NSNotification.Name
+extension Foundation.NSNotification.Name {
+  public static let reachabilityChanged: Foundation.Notification.Name
+}
+public class Reachability {
+  public typealias NetworkReachable = (PostHogRecorder.Reachability) -> Swift.Void
+  public typealias NetworkUnreachable = (PostHogRecorder.Reachability) -> Swift.Void
+  @available(*, unavailable, renamed: "Connection")
+  public enum NetworkStatus : Swift.CustomStringConvertible {
+    case notReachable, reachableViaWiFi, reachableViaWWAN
+    public var description: Swift.String {
+      get
+    }
+    public static func == (a: PostHogRecorder.Reachability.NetworkStatus, b: PostHogRecorder.Reachability.NetworkStatus) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public enum Connection : Swift.CustomStringConvertible {
+    case unavailable, wifi, cellular
+    public var description: Swift.String {
+      get
+    }
+    @available(*, deprecated, renamed: "unavailable")
+    public static let none: PostHogRecorder.Reachability.Connection
+    public static func == (a: PostHogRecorder.Reachability.Connection, b: PostHogRecorder.Reachability.Connection) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public var whenReachable: PostHogRecorder.Reachability.NetworkReachable?
+  public var whenUnreachable: PostHogRecorder.Reachability.NetworkUnreachable?
+  @available(*, deprecated, renamed: "allowsCellularConnection")
+  final public let reachableOnWWAN: Swift.Bool
+  public var allowsCellularConnection: Swift.Bool
+  public var notificationCenter: Foundation.NotificationCenter
+  @available(*, deprecated, renamed: "connection.description")
+  public var currentReachabilityString: Swift.String {
+    get
+  }
+  @available(*, unavailable, renamed: "connection")
+  public var currentReachabilityStatus: PostHogRecorder.Reachability.Connection {
+    get
+  }
+  public var connection: PostHogRecorder.Reachability.Connection {
+    get
+  }
+  required public init(reachabilityRef: SystemConfiguration.SCNetworkReachability, queueQoS: Dispatch.DispatchQoS = .default, targetQueue: Dispatch.DispatchQueue? = nil, notificationQueue: Dispatch.DispatchQueue? = .main)
+  convenience public init(hostname: Swift.String, queueQoS: Dispatch.DispatchQoS = .default, targetQueue: Dispatch.DispatchQueue? = nil, notificationQueue: Dispatch.DispatchQueue? = .main) throws
+  convenience public init(queueQoS: Dispatch.DispatchQoS = .default, targetQueue: Dispatch.DispatchQueue? = nil, notificationQueue: Dispatch.DispatchQueue? = .main) throws
+  @objc deinit
+}
+extension PostHogRecorder.Reachability {
+  public func startNotifier() throws
+  public func stopNotifier()
+  @available(*, deprecated, message: "Please use `connection != .none`")
+  public var isReachable: Swift.Bool {
+    get
+  }
+  @available(*, deprecated, message: "Please use `connection == .cellular`")
+  public var isReachableViaWWAN: Swift.Bool {
+    get
+  }
+  @available(*, deprecated, message: "Please use `connection == .wifi`")
+  public var isReachableViaWiFi: Swift.Bool {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+}
+extension PostHogRecorder.PostHogDataMode : Swift.Equatable {}
+extension PostHogRecorder.PostHogDataMode : Swift.Hashable {}
+extension PostHogRecorder.PostHogDataMode : Swift.RawRepresentable {}
+extension PostHogRecorder.LogLevel : Swift.Equatable {}
+extension PostHogRecorder.LogLevel : Swift.Hashable {}
+extension PostHogRecorder.LogLevel : Swift.RawRepresentable {}
+extension PostHogRecorder.ScreenRecorderMaskingMode : Swift.Equatable {}
+extension PostHogRecorder.ScreenRecorderMaskingMode : Swift.Hashable {}
+extension PostHogRecorder.ScreenRecorderMaskingMode : Swift.RawRepresentable {}
+@available(*, unavailable, renamed: "Connection")
+extension PostHogRecorder.Reachability.NetworkStatus : Swift.Equatable {}
+@available(*, unavailable, renamed: "Connection")
+extension PostHogRecorder.Reachability.NetworkStatus : Swift.Hashable {}
+extension PostHogRecorder.Reachability.Connection : Swift.Equatable {}
+extension PostHogRecorder.Reachability.Connection : Swift.Hashable {}
